@@ -1,0 +1,301 @@
+<!--"StAuth10244: I Hetal Patel, 000821900 certify that this material is my original work. No other person's work has been used without due acknowledgement. I have not made my work available to anyone else."-->
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>ReacJs Dice Game!</title>
+
+<script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+<script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+<style>
+*{
+  margin: 0;
+  padding: 0;
+  
+}
+body{
+  background-image: url("img/1.jpg");
+  background-repeat: no-repeat;
+  background-color: rgba(240, 238, 238, 0.705);
+  font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+#container {
+  padding: 20px;
+  margin-left: 20%;
+  margin-right: 20%;
+  margin-top: 10%;
+}
+#container h1 {
+  font-size: 64px;
+  color: #ff3300;
+}
+.dice_side{
+  display: flex;
+  align-items: center;    
+}
+.heading{
+  display: grid;
+  grid-template-columns: 45% auto;
+}
+.Form{
+  border: 2px solid gray;
+  display: grid;
+  grid-template-columns: auto;
+  grid-template-rows: auto;
+  margin-top: 2px;
+  flex: 1;    
+  justify-content: center;
+  border-radius: 10px;
+}
+#diceForm{
+  float: left;
+  margin-right: 10px;
+}
+#sideForm{
+  float: left;
+}
+.labelClass{
+    background-color: rgb(196, 192, 192);      
+}
+label{     
+  text-align: center;
+  height: 32px;
+  font-size: 20pt;         
+}
+
+.diceDownButton,.sideDownButton{
+  width:40px;  
+  color:rgb(161, 26, 26);  
+  font-size: 12pt; 
+  font-weight: 500; 
+  border-radius: 5px;
+}
+.diceUpButton,.sideUpButton{
+  width:40px;  
+  color:rgb(15, 130, 168);  
+  font-size: 12pt; 
+  font-weight: 500;
+  border-radius: 5px;
+}
+.diceUpButton:hover,.sideUpButton:hover{
+  background-color: rgb(191, 230, 243);  
+  border:2px solid rgb(91, 197, 233);
+  color:black;
+  font-size: 12pt; 
+  font-weight: 500;
+  border-radius: 5px;
+  
+}
+.diceDownButton:hover,.sideDownButton:hover{
+  background-color: rgb(243, 157, 157);   
+  border:2px solid rgb(224, 91, 91); 
+  color:black;   
+  font-size: 12pt; 
+  font-weight: 500;
+  border-radius: 5px;
+    
+}
+.diceDownButton,.sideDownButton{
+  transform: rotate(180deg);
+  border-radius: 5px;
+}
+.rollClass{
+  display: flex;
+  width: 100px;
+  height:76px;
+  margin-left:10px ;
+}
+.rollButton{
+  width:100%;
+  height:100%;
+  background-color: rgb(204, 200, 200);
+  font-size: 25px;
+  border-radius: 10px;
+}
+.rollButton:hover{
+  width:100%;
+  height:100%;
+  background-color: rgb(156, 217, 238);
+  border: 2px solid gray;
+  font-size: 25px;
+}
+.grid-container {
+  display: flex;
+  justify-content: center;
+  gap:30px;   
+  flex-direction: row;
+  flex-flow: wrap;
+}
+.grid-item {
+  background-color: rgba(255, 255, 255, 0.8);
+  border: 2px solid rgba(0, 0, 0, 0.8);
+  border-radius: 5px;
+  font-size: 20px;
+  text-align: center; 
+  vertical-align:middle;
+  padding-top: 10px;
+  height: 35px;
+  width:50px;
+}
+h4{
+   font-size: 10pt;
+}
+.sumClass{
+  text-align: center;
+  font-size: 10pt;
+  color:rgba(11, 174, 185, 0.932);
+  margin:15px;
+  border-bottom:0.5px dashed rgb(134, 122, 122);
+}
+footer{
+  text-align: center;
+  margin-top:21%;
+}
+@media only screen and (max-width: 900px) {
+  body {
+    background-position: right;
+    background-color: rgba(240, 238, 238, 0.705);
+  }
+  .heading{
+    display: grid;
+    grid-template-columns: 35% auto;
+  }
+  h4{
+     font-size: 5pt;
+  }
+}
+</style>
+</head>
+<body>
+  <div id="container"></div>
+  <script type="text/babel">
+
+  class Dice extends React.Component{
+    render(){
+      return(
+          <div className="grid-item" style={(this.props.color%2==0)?{background:'lightblue'}:{background:'rgba(212, 131, 131, 0.705)'}}>
+            <span className="d" >{this.props.side==null?1:this.props.side}</span>
+          </div>             
+        )
+    }
+  }
+
+  class DiceGameComponent extends React.Component{
+    constructor(props){
+      super(props);
+      this.state={diceValue:parseInt(this.props.dice),
+                  sideValue:parseInt(this.props.side),
+                  dice:[1],
+                  sumOfDice:1};
+    }
+    incrementDice(){
+      var newstate=this.state.diceValue + 1;      
+      this.setState({diceValue:newstate});
+      var newDice=[];
+      var sum=0;
+      for(let i=0;i<=this.state.diceValue;i++){
+        newDice[i]={value:1,key:i+1};
+        sum=sum+1; 
+      }
+      this.setState({dice:newDice,sumOfDice:sum});
+    }
+    generateDice(){
+      var newDice=[];
+      var sum=0;
+      var newSide=this.state.sideValue;
+      for(let i=0;i<=this.state.diceValue;i++){
+        let random_side=Math.floor(Math.random()*newSide+1);
+        newDice[i]={value:random_side,key:i+1};
+        sum=sum+random_side; 
+      }
+      this.setState({dice:newDice,sumOfDice:sum});
+    }
+    decrementDice(){
+      var newDice=[]; 
+      var sum=0;     
+      if(this.state.diceValue>1){
+        this.setState({diceValue:this.state.diceValue - 1}); 
+        for(let i=1;i<this.state.diceValue;i++){
+        newDice[i]={value:1,key:i+1};
+        sum=sum+1; 
+      }
+    }
+      else{
+        newDice[0]={value:1,key:i+1}
+        sum=sum+1
+      }
+      this.setState({dice:newDice,sumOfDice:sum}); 
+    }  
+    showDice(side){
+      return <Dice side={side.value} key={side.key} color={side.key}/>      
+    }
+
+    incrementSide(){
+      var newSidestate=this.state.sideValue + 1;
+      this.setState({sideValue:newSidestate});  
+    }
+    decrementSide(){
+      if(this.state.sideValue>2){
+        var newSidestate=this.state.sideValue - 1;
+        this.setState({sideValue:newSidestate});
+      }      
+    }  
+    rollTheDice(){
+      let newDice=[];
+      var newSide=this.state.sideValue;      
+      var sum=0;
+      
+      for(let i=0;i<this.state.diceValue;i++){
+        let random_side=Math.floor(Math.random()*newSide+1);
+        newDice[i]={value:random_side,key:i+1};
+        sum=sum+random_side;
+      }
+      this.setState({dice:newDice,sumOfDice:sum});
+    }
+    render(){
+      return(
+        <div>
+          <div className="grid-container">
+            {this.state.dice.map(this.showDice.bind(this))}
+          </div>
+          <div className="sumClass">
+            <h2>Sum of Dice : {this.state.sumOfDice}</h2>  
+        </div>
+        <div className="dice_side">
+          <form className="Form" id="diceForm">
+            <input type="button" className="diceUpButton" value="&Delta;" onClick={this.incrementDice.bind(this)}/>
+            <label>{this.state.diceValue}</label>                   
+            <input type="button" className="diceDownButton" value="&Delta;" onClick={this.decrementDice.bind(this)}/>
+          </form> 
+          <form className="Form" id="sideForm">
+            <input type="button" className="sideUpButton" value="&Delta;"  onClick={this.incrementSide.bind(this)}/>
+            <label>{this.state.sideValue}</label>         
+            <input type="button" className="sideDownButton" value="&Delta;"  onClick={this.decrementSide.bind(this)}/>
+          </form>        
+          <div className="rollClass">
+            <input type="button" className="rollButton" value="Roll" accesskey="r" onClick={this.rollTheDice.bind(this)}/>
+          </div>                 
+        </div> 
+        <div className="heading">
+          <h4>Number of Dices*</h4>
+          <h4>Number of Sides*</h4>
+        </div>
+      </div>
+      );
+    }
+  };
+
+  ReactDOM.render(
+    <DiceGameComponent dice="1" side="6"/> ,
+    document.querySelector("#container")
+  );
+
+  </script>
+  <footer>
+    &copy; Assignment : 4 by Hetal Patel
+  </footer>
+</body>
+
+</html>
